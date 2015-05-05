@@ -3,7 +3,8 @@
 # Niklas Akerlund v 0.5 2015-05-05
 # 
 # Borrowed code for making the folders from Peter Schmidt (Exchange MVP, blog: www.msdigest.net) DownloadTechEdEurope14VideoAndSlides.ps1
-#
+# Thanks to Markus Bäker for fixing some issues with the code for file name and -ALL !! 
+
 [CmdletBinding()]
 param(
   [switch]$CH9,
@@ -82,14 +83,15 @@ if($PPT){
       $folder = $code + ' - ' + $psession.title.Replace(':', '-').Replace('?', '').Replace('/', '-').Replace('<', '').Replace('|', '').Replace('"','').Replace('*','')
 		  $folder = $folder.substring(0, [System.Math]::Min(100, $folder.Length))
 		  $folder = $folder.trim()
-      $folder = $Dest + '\' + $folder
+      $folder = join-path $Dest $folder
       if(!(Get-Item $folder -ErrorAction Ignore)){
           New-Item -Path $folder -ItemType Directory
       }
       #tage pptx
       [string]$pptx = $psession.GetElementsByTagName('enclosure').url 
+      $target=join-path $folder ($code+".pptx") 
       if(!(get-item ($folder +'\' + $code +'.pptx') -ErrorAction Ignore)){
-        Start-BitsTransfer -Source $pptx -Destination $folder -DisplayName "PPT $Code" -Description $folder
+        Start-BitsTransfer -Source $pptx -Destination $target -DisplayName "PPT $Code" -Description $folder
       } else{
         Write-Output " $code ppt already downloaded"
       }
@@ -101,14 +103,15 @@ if($MP4){
       $folder = $code + ' - ' + $vsession.title.Replace(':', '-').Replace('?', '').Replace('/', '-').Replace('<', '').Replace('|', '').Replace('"','').Replace('*','')
 		  $folder = $folder.substring(0, [System.Math]::Min(100, $folder.Length))
 		  $folder = $folder.trim()
-      $folder = $Dest + '\' + $folder
+      $folder = join-path $Dest $folder
       if(!(Get-Item $folder -ErrorAction Ignore)){
           New-Item -Path $folder -ItemType Directory
       }
       [string]$video = $vsession.GetElementsByTagName('enclosure').url
+      $target=join-path $folder ($code+".mp4") 
       #$video
       if(!(get-item ($folder +'\' + $code +'.mp4') -ErrorAction Ignore)){
-        Start-BitsTransfer -Source $video -Destination $folder -DisplayName "MP4 $Code" -Description $folder
+        Start-BitsTransfer -Source $video -Destination $target -DisplayName "MP4 $Code" -Description $folder
       }else{
         Write-Output " $code video already downloaded"
       }
