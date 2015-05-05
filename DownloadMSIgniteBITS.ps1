@@ -6,14 +6,7 @@
 #
 [CmdletBinding()]
 param(
-  [switch]$CDP,
-  [switch]$WIN,
-  [switch]$OFC,
-  [switch]$FDN,
-  [switch]$EM,
-  [switch]$DEV,
-  [switch]$DBI,
-  [switch]$All,
+  [switch]$CH9,
   [switch]$PPT,
   [switch]$MP4,
   [string]$Dest='C:\Ignitetest')
@@ -27,39 +20,9 @@ $psessions = @()
 $vsessions = @()
 #$ = 'C:\techedtest'
 
-if($ALL){
-  $psessions =  Invoke-RestMethod 'http://channel9.msdn.com/Events/Ignite/2015/RSS' | where comments -cmatch "CDP"
-  $vsessions = Invoke-RestMethod 'http://channel9.msdn.com/Events/Ignite/2015/RSS/mp4high' | where comments -cmatch "CDP"
-}
-
-if($WIN){
-  $psessions +=  Invoke-RestMethod 'http://channel9.msdn.com/Events/TechEd/Europe/2014/RSS/slides' | where comments -cmatch "WIN"
-  $vsessions += Invoke-RestMethod 'http://channel9.msdn.com/Events/TechEd/Europe/2014/RSS/mp4high' | where comments -cmatch "WIN"
-}
-
-if($OFC){
-  $psessions +=  Invoke-RestMethod 'http://channel9.msdn.com/Events/TechEd/Europe/2014/RSS/slides' | where comments -cmatch "OFC"
-  $vsessions += Invoke-RestMethod 'http://channel9.msdn.com/Events/TechEd/Europe/2014/RSS/mp4high' | where comments -cmatch "OFC"
-}
-
-if($FDN){
-  $psessions +=  Invoke-RestMethod 'http://channel9.msdn.com/Events/TechEd/Europe/2014/RSS/slides' | where comments -cmatch "FDN"
-  $vsessions += Invoke-RestMethod 'http://channel9.msdn.com/Events/TechEd/Europe/2014/RSS/mp4high' | where comments -cmatch "FDN"
-}
-
-if($EM){
-  $psessions +=  Invoke-RestMethod 'http://channel9.msdn.com/Events/TechEd/Europe/2014/RSS/slides' | where comments -cmatch "EM"
-  $vsessions += Invoke-RestMethod 'http://channel9.msdn.com/Events/TechEd/Europe/2014/RSS/mp4high' | where comments -cmatch "EM"
-}
-
-if($DEV){
-  $psessions +=  Invoke-RestMethod 'http://channel9.msdn.com/Events/TechEd/Europe/2014/RSS/slides' | where comments -cmatch "DEV"
-  $vsessions += Invoke-RestMethod 'http://channel9.msdn.com/Events/TechEd/Europe/2014/RSS/mp4high' | where comments -cmatch "DEV"
-}
-
-if($DBI){
-  $psessions +=  Invoke-RestMethod 'http://channel9.msdn.com/Events/TechEd/Europe/2014/RSS/slides' | where comments -cmatch "DBI"
-  $vsessions += Invoke-RestMethod 'http://channel9.msdn.com/Events/TechEd/Europe/2014/RSS/mp4high' | where comments -cmatch "DBI"
+if($CH9){
+  $psessions =  Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides'  | where comments -cmatch "C9"
+  $vsessions =  Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high'  | where comments -cmatch "C9"
 }
 
 if ($All){
