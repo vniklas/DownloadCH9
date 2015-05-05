@@ -15,6 +15,7 @@ param(
   [switch]$CLOUD,
   [switch]$IAAS,
   [switch]$AUTOMATION,
+  [switch]$ALL,
 
   [switch]$PPT,
   [switch]$MP4,
@@ -30,40 +31,40 @@ $vsessions = @()
 #$ = 'C:\techedtest'
 
 if($CH9){
-  $psessions =  Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides'  | Where-Object comments -cmatch "C9"
-  $vsessions =  Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high'  | Where-Object comments -cmatch "C9"
+  $psessions =  Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides'  | Where-Object comments -cmatch 'C9'
+  $vsessions =  Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high'  | Where-Object comments -cmatch 'C9'
 }
 if($KEY){
-  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object comments -cmatch "KEY"
-  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object comments -cmatch "KEY"
+  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object comments -cmatch 'KEY'
+  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object comments -cmatch 'KEY'
 }
 if($FDN){
-  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object comments -cmatch "FDN"
-  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object comments -cmatch "FDN"
+  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object comments -cmatch 'FDN'
+  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object comments -cmatch 'FDN'
 }
 if($DEV){
-  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object category -Contains "development"
-  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object category -Contains "development"
+  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object category -Contains 'development'
+  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object category -Contains 'development'
 }
 if($HYBRID){
-  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object category -Contains "hybrid"
-  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object category -Contains "hybrid"
+  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object category -Contains 'hybrid'
+  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object category -Contains 'hybrid'
 }
 if($VOICE){
-  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object category -Contains "voice"
-  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object category -Contains "voice"
+  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object category -Contains 'voice'
+  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object category -Contains 'voice'
 }
 if($CLOUD){
-  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object category -Contains "cloud"
-  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object category -Contains "cloud"
+  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object category -Contains 'cloud'
+  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object category -Contains 'cloud'
 }
 if($IAAS){
-  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object category -Contains "infrastructure-as-a-service"
-  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object category -Contains "infrastructure-as-a-service"
+  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object category -Contains 'infrastructure-as-a-service'
+  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object category -Contains 'infrastructure-as-a-service'
 }
 if($AUTOMATION){
-  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object category -Contains "automation"
-  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object category -Contains "automation"
+  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object category -Contains 'automation'
+  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object category -Contains 'automation'
 }
 
 
@@ -77,17 +78,17 @@ if ($All){
 if($PPT){
   foreach ($psession in $psessions){
       # create folder
-      $code = $psession.comments.split("/") | Select-Object -last 1	
-      $folder = $code + " - " + $psession.title.Replace(":", "-").Replace("?", "").Replace("/", "-").Replace("<", "").Replace("|", "").Replace('"',"").Replace("*","")
+      $code = $psession.comments.split('/') | Select-Object -last 1	
+      $folder = $code + ' - ' + $psession.title.Replace(':', '-').Replace('?', '').Replace('/', '-').Replace('<', '').Replace('|', '').Replace('"','').Replace('*','')
 		  $folder = $folder.substring(0, [System.Math]::Min(100, $folder.Length))
 		  $folder = $folder.trim()
-      $folder = $Dest + "\" + $folder
+      $folder = $Dest + '\' + $folder
       if(!(Get-Item $folder -ErrorAction Ignore)){
           New-Item -Path $folder -ItemType Directory
       }
       #tage pptx
       [string]$pptx = $psession.GetElementsByTagName('enclosure').url 
-      if(!(get-item ($folder +"\" + $code +".pptx") -ErrorAction Ignore)){
+      if(!(get-item ($folder +'\' + $code +'.pptx') -ErrorAction Ignore)){
         Start-BitsTransfer -Source $pptx -Destination $folder -DisplayName "PPT $Code" -Description $folder
       } else{
         Write-Output " $code ppt already downloaded"
@@ -96,17 +97,17 @@ if($PPT){
 }
 if($MP4){
   foreach ($vsession in $vsessions){
-      $code = $vsession.comments.split("/") | Select-Object -last 1	
-      $folder = $code + " - " + $vsession.title.Replace(":", "-").Replace("?", "").Replace("/", "-").Replace("<", "").Replace("|", "").Replace('"',"").Replace("*","")
+      $code = $vsession.comments.split('/') | Select-Object -last 1	
+      $folder = $code + ' - ' + $vsession.title.Replace(':', '-').Replace('?', '').Replace('/', '-').Replace('<', '').Replace('|', '').Replace('"','').Replace('*','')
 		  $folder = $folder.substring(0, [System.Math]::Min(100, $folder.Length))
 		  $folder = $folder.trim()
-      $folder = $Dest + "\" + $folder
+      $folder = $Dest + '\' + $folder
       if(!(Get-Item $folder -ErrorAction Ignore)){
           New-Item -Path $folder -ItemType Directory
       }
       [string]$video = $vsession.GetElementsByTagName('enclosure').url
       #$video
-      if(!(get-item ($folder +"\" + $code +".mp4") -ErrorAction Ignore)){
+      if(!(get-item ($folder +'\' + $code +'.mp4') -ErrorAction Ignore)){
         Start-BitsTransfer -Source $video -Destination $folder -DisplayName "MP4 $Code" -Description $folder
       }else{
         Write-Output " $code video already downloaded"
