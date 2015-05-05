@@ -1,6 +1,6 @@
 ﻿# Download MS Ignite Content with BITS
 # 
-# Niklas Akerlund v 0.4 2015-05-05
+# Niklas Akerlund v 0.5 2015-05-05
 # 
 # Borrowed code for making the folders from Peter Schmidt (Exchange MVP, blog: www.msdigest.net) DownloadTechEdEurope14VideoAndSlides.ps1
 #
@@ -14,6 +14,7 @@ param(
   [switch]$VOICE,
   [switch]$CLOUD,
   [switch]$IAAS,
+  [switch]$AUTOMATION,
 
   [switch]$PPT,
   [switch]$MP4,
@@ -59,6 +60,10 @@ if($CLOUD){
 if($IAAS){
   $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object category -Contains "infrastructure-as-a-service"
   $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object category -Contains "infrastructure-as-a-service"
+}
+if($AUTOMATION){
+  $psessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/slides' | Where-Object category -Contains "automation"
+  $vsessions += Invoke-RestMethod 'http://s.ch9.ms/Events/Ignite/2015/RSS/mp4high' | Where-Object category -Contains "automation"
 }
 
 
